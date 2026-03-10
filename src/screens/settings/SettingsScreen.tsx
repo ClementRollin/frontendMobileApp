@@ -11,15 +11,15 @@ export const SettingsScreen = () => {
 
   const logout = async () => {
     await logoutMutation.mutateAsync();
-    Alert.alert('Session', 'You are now logged out.');
+    Alert.alert('Session', 'Vous etes maintenant deconnecte.');
   };
 
   return (
     <ScreenContainer>
       <View style={styles.card}>
-        <Text style={styles.title}>Settings</Text>
-        <Text style={styles.subtitle}>Manage session and app preferences.</Text>
-        <AppButton label="Logout" variant="danger" onPress={logout} loading={logoutMutation.isPending} />
+        <Text style={styles.title}>Parametres</Text>
+        <Text style={styles.subtitle}>Gerez votre session et les preferences de l'application.</Text>
+        <AppButton label="Se deconnecter" variant="danger" onPress={logout} loading={logoutMutation.isPending} />
       </View>
     </ScreenContainer>
   );

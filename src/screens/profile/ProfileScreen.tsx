@@ -12,7 +12,7 @@ export const ProfileScreen = () => {
   if (!user) {
     return (
       <ScreenContainer>
-        <EmptyState title="No profile loaded" subtitle="Please reconnect." />
+        <EmptyState title="Aucun profil charge" subtitle="Reconnectez-vous." />
       </ScreenContainer>
     );
   }
@@ -20,10 +20,10 @@ export const ProfileScreen = () => {
   return (
     <ScreenContainer>
       <View style={styles.card}>
-        <Text style={styles.title}>Profile</Text>
-        <Text style={styles.row}>Name: {user.name}</Text>
+        <Text style={styles.title}>Profil</Text>
+        <Text style={styles.row}>Nom: {user.name}</Text>
         <Text style={styles.row}>Email: {user.email}</Text>
-        <Text style={styles.row}>Created at: {user.created_at}</Text>
+        <Text style={styles.row}>Cree le: {user.created_at}</Text>
       </View>
     </ScreenContainer>
   );

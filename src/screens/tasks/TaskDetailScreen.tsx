@@ -23,9 +23,9 @@ import { getErrorMessage } from '../../utils/error';
 type Props = NativeStackScreenProps<MainStackParamList, 'TaskDetail'>;
 
 const statusOptions = [
-  { label: 'To do', value: 'todo' as const },
-  { label: 'In progress', value: 'in_progress' as const },
-  { label: 'Done', value: 'done' as const },
+  { label: 'A faire', value: 'todo' as const },
+  { label: 'En cours', value: 'in_progress' as const },
+  { label: 'Terminee', value: 'done' as const },
 ];
 
 export const TaskDetailScreen = ({ route, navigation }: Props) => {
@@ -64,10 +64,10 @@ export const TaskDetailScreen = ({ route, navigation }: Props) => {
   };
 
   const confirmDelete = () => {
-    Alert.alert('Delete task', 'Are you sure you want to delete this task?', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert('Supprimer la tache', 'Voulez-vous vraiment supprimer cette tache ?', [
+      { text: 'Annuler', style: 'cancel' },
       {
-        text: 'Delete',
+        text: 'Supprimer',
         style: 'destructive',
         onPress: async () => {
           await deleteMutation.mutateAsync(task.id);
@@ -95,20 +95,20 @@ export const TaskDetailScreen = ({ route, navigation }: Props) => {
             <StatusBadge status={task.status} />
             <PriorityBadge priority={task.priority} />
           </View>
-          <Text style={styles.meta}>Due: {formatDateTime(task.due_date)}</Text>
-          <Text style={styles.meta}>Creator: {task.creator?.name ?? `#${task.creator_id}`}</Text>
-          <Text style={styles.meta}>Assignee: {task.assignee?.name ?? 'Unassigned'}</Text>
-          <Text style={styles.description}>{task.description || 'No description'}</Text>
+          <Text style={styles.meta}>Echeance: {formatDateTime(task.due_date)}</Text>
+          <Text style={styles.meta}>Createur: {task.creator?.name ?? `#${task.creator_id}`}</Text>
+          <Text style={styles.meta}>Assignee: {task.assignee?.name ?? 'Non assignee'}</Text>
+          <Text style={styles.description}>{task.description || 'Aucune description'}</Text>
         </View>
 
         {isCreator ? (
           <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Update status</Text>
+            <Text style={styles.sectionTitle}>Mettre a jour le statut</Text>
             <OptionChips options={statusOptions} value={task.status} onChange={(value) => updateStatus(value as TaskStatus)} />
             <View style={styles.row}>
-              <AppButton label="Edit task" onPress={() => navigation.navigate('TaskEdit', { task })} />
+              <AppButton label="Modifier" onPress={() => navigation.navigate('TaskEdit', { task })} />
               <AppButton
-                label="Delete"
+                label="Supprimer"
                 variant="danger"
                 onPress={confirmDelete}
                 loading={deleteMutation.isPending}
@@ -118,16 +118,16 @@ export const TaskDetailScreen = ({ route, navigation }: Props) => {
         ) : null}
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Comments</Text>
+          <Text style={styles.sectionTitle}>Commentaires</Text>
           {commentsQuery.isLoading ? <LoadingBlock /> : null}
           {commentsQuery.isError ? <ErrorState message={getErrorMessage(commentsQuery.error)} /> : null}
           {!commentsQuery.isLoading && !commentsQuery.data?.length ? (
-            <EmptyState title="No comments yet" subtitle="Start collaboration with a first comment." />
+            <EmptyState title="Aucun commentaire" subtitle="Ajoutez un premier commentaire." />
           ) : null}
 
           {commentsQuery.data?.map((comment) => (
             <View key={comment.id} style={styles.comment}>
-              <Text style={styles.commentAuthor}>{comment.user?.name ?? `User #${comment.user_id}`}</Text>
+              <Text style={styles.commentAuthor}>{comment.user?.name ?? `Utilisateur #${comment.user_id}`}</Text>
               <Text style={styles.commentContent}>{comment.content}</Text>
               <Text style={styles.commentMeta}>{formatDateTime(comment.created_at)}</Text>
             </View>
@@ -136,12 +136,12 @@ export const TaskDetailScreen = ({ route, navigation }: Props) => {
           {canComment ? (
             <View style={styles.commentForm}>
               <AppInput
-                label="Add a comment"
+                label="Ajouter un commentaire"
                 value={commentContent}
                 onChangeText={setCommentContent}
-                placeholder="Write your comment..."
+                placeholder="Ecrivez votre commentaire..."
               />
-              <AppButton label="Send" onPress={submitComment} loading={addCommentMutation.isPending} />
+              <AppButton label="Envoyer" onPress={submitComment} loading={addCommentMutation.isPending} />
             </View>
           ) : null}
         </View>
