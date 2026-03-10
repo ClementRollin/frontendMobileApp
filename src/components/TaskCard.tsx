@@ -12,46 +12,99 @@ type Props = {
   onPress: () => void;
 };
 
+const getPriorityStripeColor = (priority: Task['priority']) => {
+  if (priority === 'high') {
+    return '#FCA5A5';
+  }
+
+  if (priority === 'medium') {
+    return '#FCD34D';
+  }
+
+  return '#7DD3FC';
+};
+
 export const TaskCard = ({ task, onPress }: Props) => (
   <Pressable style={styles.card} onPress={onPress}>
+    <View style={[styles.priorityStripe, { backgroundColor: getPriorityStripeColor(task.priority) }]} />
+
     <View style={styles.header}>
-      <Text style={styles.title}>{task.title}</Text>
+      <Text style={styles.title} numberOfLines={2}>
+        {task.title}
+      </Text>
+      <Text style={styles.chevron}>›</Text>
     </View>
+
     <View style={styles.badges}>
       <StatusBadge status={task.status} />
       <PriorityBadge priority={task.priority} />
     </View>
-    <Text style={styles.meta}>Due: {formatDateTime(task.due_date)}</Text>
-    {task.assignee ? <Text style={styles.meta}>Assigned to: {task.assignee.name}</Text> : null}
+
+    <View style={styles.metaBlock}>
+      <Text style={styles.metaLabel}>Echeance</Text>
+      <Text style={styles.metaValue}>{formatDateTime(task.due_date)}</Text>
+    </View>
+
+    <View style={styles.metaBlock}>
+      <Text style={styles.metaLabel}>Assignee</Text>
+      <Text style={styles.metaValue}>{task.assignee?.name ?? 'Non assignee'}</Text>
+    </View>
   </Pressable>
 );
 
 const styles = StyleSheet.create({
   card: {
+    position: 'relative',
     backgroundColor: colors.card,
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: colors.border,
-    padding: 14,
-    gap: 8,
+    padding: 16,
+    gap: 10,
+    overflow: 'hidden',
+  },
+  priorityStripe: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 4,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    gap: 8,
   },
   title: {
-    fontSize: 16,
-    fontWeight: '700',
+    flex: 1,
+    fontSize: 17,
+    fontWeight: '800',
     color: colors.textPrimary,
-    flexShrink: 1,
+    lineHeight: 22,
+  },
+  chevron: {
+    color: '#94A3B8',
+    fontSize: 22,
+    fontWeight: '700',
+    marginTop: -2,
   },
   badges: {
     flexDirection: 'row',
     gap: 8,
   },
-  meta: {
+  metaBlock: {
+    gap: 2,
+  },
+  metaLabel: {
+    color: '#64748B',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
+  },
+  metaValue: {
     color: colors.textSecondary,
     fontSize: 13,
+    fontWeight: '600',
   },
 });

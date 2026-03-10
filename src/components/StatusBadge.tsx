@@ -4,9 +4,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { TaskStatus } from '../types/task';
 
 const statusMap: Record<TaskStatus, { label: string; backgroundColor: string; textColor: string }> = {
-  todo: { label: 'To do', backgroundColor: '#E2E8F0', textColor: '#334155' },
-  in_progress: { label: 'In progress', backgroundColor: '#DBEAFE', textColor: '#1D4ED8' },
-  done: { label: 'Done', backgroundColor: '#DCFCE7', textColor: '#166534' },
+  todo: { label: 'A faire', backgroundColor: '#E2E8F0', textColor: '#334155' },
+  in_progress: { label: 'En cours', backgroundColor: '#DBEAFE', textColor: '#1D4ED8' },
+  done: { label: 'Terminee', backgroundColor: '#DCFCE7', textColor: '#166534' },
 };
 
 export const StatusBadge = ({ status }: { status: TaskStatus }) => {
