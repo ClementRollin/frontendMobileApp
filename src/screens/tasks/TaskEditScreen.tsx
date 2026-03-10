@@ -21,9 +21,9 @@ export const TaskEditScreen = ({ route, navigation }: Props) => {
     if (payload.due_date && isWithinNext24Hours(payload.due_date)) {
       await new Promise<void>((resolve) => {
         Alert.alert(
-          'Local notifications',
-          'We request notification permission to remind you before this task due date.',
-          [{ text: 'Continue', onPress: () => resolve() }],
+          'Notifications locales',
+          "Nous demandons l'autorisation pour vous rappeler cette echeance.",
+          [{ text: 'Continuer', onPress: () => resolve() }],
         );
       });
     }
@@ -34,7 +34,7 @@ export const TaskEditScreen = ({ route, navigation }: Props) => {
     });
 
     if (!result.notificationResult.scheduled && result.notificationResult.reason === 'permission_denied') {
-      Alert.alert('Notifications', 'Permission refused. You can still use the app without reminders.');
+      Alert.alert('Notifications', "Permission refusee. L'application reste utilisable sans rappels.");
     }
 
     navigation.goBack();
@@ -42,7 +42,7 @@ export const TaskEditScreen = ({ route, navigation }: Props) => {
 
   return (
     <ScreenContainer scrollable>
-      <Text style={styles.title}>Edit task</Text>
+      <Text style={styles.title}>Modifier la tache</Text>
       <TaskForm
         initialValues={{
           title: task.title,
@@ -52,7 +52,7 @@ export const TaskEditScreen = ({ route, navigation }: Props) => {
           due_date: task.due_date ?? '',
           assignee_id: task.assignee_id,
         }}
-        submitLabel="Update task"
+        submitLabel="Mettre a jour la tache"
         loading={updateTaskMutation.isPending}
         errorMessage={updateTaskMutation.error ? getErrorMessage(updateTaskMutation.error) : undefined}
         onSubmit={handleSubmit}
