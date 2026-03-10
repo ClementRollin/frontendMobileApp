@@ -61,14 +61,17 @@ export const notificationService = {
     const triggerTimestamp = Math.max(Date.now() + 5_000, dueDate.getTime() - 30 * 60 * 1000);
     const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Task due soon',
-        body: `"${task.title}" is due at ${formatDateTime(task.due_date)}.`,
+        title: 'Echeance proche',
+        body: `La tache "${task.title}" est prevue a ${formatDateTime(task.due_date)}.`,
       },
-      trigger: new Date(triggerTimestamp),
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        date: new Date(triggerTimestamp),
+      },
     });
 
     await storageService.setTaskNotification(task.id, notificationId);
 
-    return { scheduled: true, message: 'Due date reminder scheduled.' };
+    return { scheduled: true, message: 'Rappel programme.' };
   },
 };

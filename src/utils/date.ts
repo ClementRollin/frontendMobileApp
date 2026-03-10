@@ -2,7 +2,7 @@ import { format, parseISO } from 'date-fns';
 
 export const formatDateTime = (isoDate?: string | null): string => {
   if (!isoDate) {
-    return 'No due date';
+    return 'Aucune echeance';
   }
 
   try {

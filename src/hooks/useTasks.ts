@@ -47,7 +47,7 @@ export const useTasks = (scope: TaskScope, status?: TaskStatus) => {
             tasks: cached.tasks,
             meta: cached.meta,
             fromCache: true,
-            cacheMessage: 'API indisponible. Affichage des dernières données locales.',
+            cacheMessage: 'API indisponible. Affichage des dernieres donnees locales.',
           };
         }
 
