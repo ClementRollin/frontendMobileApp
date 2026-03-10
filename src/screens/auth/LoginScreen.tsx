@@ -17,8 +17,8 @@ import { getErrorMessage } from '../../utils/error';
 type Props = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
 const schema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Minimum 8 characters'),
+  email: z.string().email('Email invalide'),
+  password: z.string().min(8, 'Minimum 8 caracteres'),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -45,8 +45,8 @@ export const LoginScreen = ({ navigation }: Props) => {
   return (
     <ScreenContainer scrollable>
       <View style={styles.hero}>
-        <Text style={styles.title}>Welcome back</Text>
-        <Text style={styles.subtitle}>Sign in to continue managing collaborative tasks.</Text>
+        <Text style={styles.title}>Bon retour</Text>
+        <Text style={styles.subtitle}>Connectez-vous pour gerer vos taches collaboratives.</Text>
       </View>
 
       <Controller
@@ -70,7 +70,7 @@ export const LoginScreen = ({ navigation }: Props) => {
         name="password"
         render={({ field: { onChange, onBlur, value } }) => (
           <AppInput
-            label="Password"
+            label="Mot de passe"
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -82,8 +82,9 @@ export const LoginScreen = ({ navigation }: Props) => {
 
       {loginMutation.error ? <ErrorState message={getErrorMessage(loginMutation.error)} /> : null}
 
-      <AppButton label="Login" onPress={handleSubmit(onSubmit)} loading={loginMutation.isPending} />
-      <AppButton label="Create account" variant="secondary" onPress={() => navigation.navigate('Register')} />
+      <AppButton label="Se connecter" onPress={handleSubmit(onSubmit)} loading={loginMutation.isPending} />
+      <AppButton label="S'inscrire" variant="secondary" onPress={() => navigation.navigate('Register')} />
+      <AppButton label="Retour accueil" variant="secondary" onPress={() => navigation.navigate('Home')} />
     </ScreenContainer>
   );
 };

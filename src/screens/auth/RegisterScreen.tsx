@@ -17,9 +17,9 @@ import { getErrorMessage } from '../../utils/error';
 type Props = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 
 const schema = z.object({
-  name: z.string().min(2, 'Minimum 2 characters'),
-  email: z.string().email('Invalid email'),
-  password: z.string().min(8, 'Minimum 8 characters'),
+  name: z.string().min(2, 'Minimum 2 caracteres'),
+  email: z.string().email('Email invalide'),
+  password: z.string().min(8, 'Minimum 8 caracteres'),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -47,15 +47,15 @@ export const RegisterScreen = ({ navigation }: Props) => {
   return (
     <ScreenContainer scrollable>
       <View style={styles.hero}>
-        <Text style={styles.title}>Create account</Text>
-        <Text style={styles.subtitle}>Register to access your collaborative workspace.</Text>
+        <Text style={styles.title}>Creer un compte</Text>
+        <Text style={styles.subtitle}>Inscrivez-vous pour acceder a votre espace collaboratif.</Text>
       </View>
 
       <Controller
         control={control}
         name="name"
         render={({ field: { onChange, onBlur, value } }) => (
-          <AppInput label="Name" value={value} onChangeText={onChange} onBlur={onBlur} error={errors.name?.message} />
+          <AppInput label="Nom" value={value} onChangeText={onChange} onBlur={onBlur} error={errors.name?.message} />
         )}
       />
 
@@ -80,7 +80,7 @@ export const RegisterScreen = ({ navigation }: Props) => {
         name="password"
         render={({ field: { onChange, onBlur, value } }) => (
           <AppInput
-            label="Password"
+            label="Mot de passe"
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -92,8 +92,9 @@ export const RegisterScreen = ({ navigation }: Props) => {
 
       {registerMutation.error ? <ErrorState message={getErrorMessage(registerMutation.error)} /> : null}
 
-      <AppButton label="Register" onPress={handleSubmit(onSubmit)} loading={registerMutation.isPending} />
-      <AppButton label="Back to login" variant="secondary" onPress={() => navigation.navigate('Login')} />
+      <AppButton label="S'inscrire" onPress={handleSubmit(onSubmit)} loading={registerMutation.isPending} />
+      <AppButton label="Retour connexion" variant="secondary" onPress={() => navigation.navigate('Login')} />
+      <AppButton label="Retour accueil" variant="secondary" onPress={() => navigation.navigate('Home')} />
     </ScreenContainer>
   );
 };

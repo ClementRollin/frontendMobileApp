@@ -6,7 +6,7 @@ import { colors } from '../../constants/theme';
 export const WelcomeScreen = () => (
   <View style={styles.container}>
     <Text style={styles.title}>TaskCollab</Text>
-    <Text style={styles.subtitle}>Collaborative task management</Text>
+    <Text style={styles.subtitle}>Gestion de taches collaborative</Text>
     <ActivityIndicator size="large" color={colors.primary} style={styles.loader} />
   </View>
 );
