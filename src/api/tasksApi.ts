@@ -1,21 +1,17 @@
 import { apiClient } from './client';
-import { ApiSuccessResponse, PaginatedMeta } from '../types/api';
+import { ApiSuccessResponse, PaginatedResponse } from '../types/api';
 import {
+  ConfirmBlockedPayload,
   CreateTaskPayload,
   Task,
-  TaskScope,
-  TaskStatus,
+  TaskFilters,
   UpdateTaskPayload,
   UpdateTaskStatusPayload,
 } from '../types/task';
 
-type TaskListResponse = ApiSuccessResponse<Task[]> & {
-  meta: PaginatedMeta;
-};
-
 export const tasksApi = {
-  list: async (params: { scope: TaskScope; status?: TaskStatus; page?: number; per_page?: number }) => {
-    const response = await apiClient.get<TaskListResponse>('/tasks', { params });
+  list: async (params: TaskFilters) => {
+    const response = await apiClient.get<PaginatedResponse<Task>>('/tasks', { params });
     return response.data;
   },
   getById: async (taskId: number) => {
@@ -36,6 +32,10 @@ export const tasksApi = {
   },
   updateStatus: async (taskId: number, payload: UpdateTaskStatusPayload) => {
     const response = await apiClient.patch<ApiSuccessResponse<Task>>(`/tasks/${taskId}/status`, payload);
+    return response.data;
+  },
+  confirmBlocked: async (taskId: number, payload: ConfirmBlockedPayload = {}) => {
+    const response = await apiClient.patch<ApiSuccessResponse<Task>>(`/tasks/${taskId}/confirm-blocked`, payload);
     return response.data;
   },
 };
