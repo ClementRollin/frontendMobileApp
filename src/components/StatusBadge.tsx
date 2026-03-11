@@ -1,12 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { statusLabelFr } from '../constants/labels';
 import { TaskStatus } from '../types/task';
 
 const statusMap: Record<TaskStatus, { label: string; backgroundColor: string; textColor: string }> = {
-  todo: { label: 'A faire', backgroundColor: '#E2E8F0', textColor: '#334155' },
-  in_progress: { label: 'En cours', backgroundColor: '#DBEAFE', textColor: '#1D4ED8' },
-  done: { label: 'Terminee', backgroundColor: '#DCFCE7', textColor: '#166534' },
+  todo: { label: statusLabelFr.todo, backgroundColor: '#E2E8F0', textColor: '#334155' },
+  in_progress: { label: statusLabelFr.in_progress, backgroundColor: '#DBEAFE', textColor: '#1D4ED8' },
+  blocked: { label: statusLabelFr.blocked, backgroundColor: '#FEE2E2', textColor: '#B91C1C' },
+  in_review: { label: statusLabelFr.in_review, backgroundColor: '#EDE9FE', textColor: '#6D28D9' },
+  waiting_for_test: { label: statusLabelFr.waiting_for_test, backgroundColor: '#FEF3C7', textColor: '#92400E' },
+  tested: { label: statusLabelFr.tested, backgroundColor: '#DCFCE7', textColor: '#166534' },
+  deployed: { label: statusLabelFr.deployed, backgroundColor: '#D1FAE5', textColor: '#065F46' },
 };
 
 export const StatusBadge = ({ status }: { status: TaskStatus }) => {

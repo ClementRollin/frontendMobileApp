@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { statusLabelFr } from '../constants/labels';
 import { colors } from '../constants/theme';
 import { Task } from '../types/task';
 import { formatDateTime } from '../utils/date';
@@ -32,7 +33,7 @@ export const TaskCard = ({ task, onPress }: Props) => (
       <Text style={styles.title} numberOfLines={2}>
         {task.title}
       </Text>
-      <Text style={styles.chevron}>›</Text>
+      <Text style={styles.chevron}>{'>'}</Text>
     </View>
 
     <View style={styles.badges}>
@@ -41,14 +42,30 @@ export const TaskCard = ({ task, onPress }: Props) => (
     </View>
 
     <View style={styles.metaBlock}>
-      <Text style={styles.metaLabel}>Echeance</Text>
+      <Text style={styles.metaLabel}>Échéance</Text>
       <Text style={styles.metaValue}>{formatDateTime(task.due_date)}</Text>
     </View>
 
     <View style={styles.metaBlock}>
-      <Text style={styles.metaLabel}>Assignee</Text>
-      <Text style={styles.metaValue}>{task.assignee?.name ?? 'Non assignee'}</Text>
+      <Text style={styles.metaLabel}>Assignée à</Text>
+      <Text style={styles.metaValue}>{task.assignee?.name ?? 'Non assignée'}</Text>
     </View>
+
+    {task.team ? (
+      <View style={styles.metaBlock}>
+        <Text style={styles.metaLabel}>Équipe</Text>
+        <Text style={styles.metaValue}>{task.team.name}</Text>
+      </View>
+    ) : null}
+
+    {task.status === 'blocked' && task.blocked_reason ? (
+      <View style={styles.metaBlock}>
+        <Text style={styles.metaLabel}>{statusLabelFr.blocked}</Text>
+        <Text style={styles.metaValue} numberOfLines={2}>
+          {task.blocked_reason}
+        </Text>
+      </View>
+    ) : null}
   </Pressable>
 );
 

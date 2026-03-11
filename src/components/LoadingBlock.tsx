@@ -3,16 +3,26 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { colors } from '../constants/theme';
 
-export const LoadingBlock = () => (
-  <View style={styles.container}>
-    <ActivityIndicator size="large" color={colors.primary} />
+type Props = {
+  variant?: 'list' | 'inline';
+};
+
+export const LoadingBlock = ({ variant = 'list' }: Props) => (
+  <View style={[styles.container, variant === 'inline' ? styles.inline : styles.list]}>
+    <ActivityIndicator size={variant === 'inline' ? 'small' : 'large'} color={colors.primary} />
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  list: {
+    minHeight: 180,
+    width: '100%',
+  },
+  inline: {
+    minHeight: 40,
   },
 });

@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { priorityLabelFr } from '../constants/labels';
 import { TaskPriority } from '../types/task';
 
 const priorityMap: Record<TaskPriority, { label: string; backgroundColor: string; textColor: string }> = {
-  low: { label: 'Basse', backgroundColor: '#ECFEFF', textColor: '#155E75' },
-  medium: { label: 'Moyenne', backgroundColor: '#FEF3C7', textColor: '#92400E' },
-  high: { label: 'Haute', backgroundColor: '#FEE2E2', textColor: '#991B1B' },
+  low: { label: priorityLabelFr.low, backgroundColor: '#ECFEFF', textColor: '#155E75' },
+  medium: { label: priorityLabelFr.medium, backgroundColor: '#FEF3C7', textColor: '#92400E' },
+  high: { label: priorityLabelFr.high, backgroundColor: '#FEE2E2', textColor: '#991B1B' },
 };
 
 export const PriorityBadge = ({ priority }: { priority: TaskPriority }) => {
