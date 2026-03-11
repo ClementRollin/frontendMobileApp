@@ -4,7 +4,7 @@ export type ApiSuccessResponse<T> = {
   meta?: Record<string, unknown>;
 };
 
-export type ApiErrorResponse = {
+export type ApiError = {
   message: string;
   errors?: Record<string, string[]>;
 };
@@ -17,4 +17,8 @@ export type PaginatedMeta = {
   from: number | null;
   to: number | null;
   has_more_pages: boolean;
+};
+
+export type PaginatedResponse<T> = ApiSuccessResponse<T[]> & {
+  meta: PaginatedMeta;
 };

@@ -1,4 +1,4 @@
-import { User } from './auth';
+import { UserSummary } from './auth';
 
 export type TaskComment = {
   id: number;
@@ -7,7 +7,7 @@ export type TaskComment = {
   content: string;
   created_at: string;
   updated_at: string;
-  user?: User;
+  user?: UserSummary;
 };
 
 export type CreateCommentPayload = {

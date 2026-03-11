@@ -1,13 +1,26 @@
 import axios from 'axios';
 
-import { ApiErrorResponse } from '../types/api';
+import { ApiError } from '../types/api';
 
-export const getErrorMessage = (error: unknown, fallback = 'Erreur inattendue'): string => {
-  if (axios.isAxiosError<ApiErrorResponse>(error)) {
+const networkFallback = "Impossible de contacter l'API. Vérifiez que le backend est démarré et que l'URL est correcte.";
+
+export const getErrorMessage = (error: unknown, fallback = 'Une erreur inattendue est survenue.'): string => {
+  if (axios.isAxiosError<ApiError>(error)) {
     if (!error.response) {
-      return "Impossible de contacter l'API. Verifie que le backend tourne et que l'URL API est correcte.";
+      return networkFallback;
     }
-    return error.response?.data?.message ?? fallback;
+
+    const payload = error.response.data;
+    if (payload?.errors) {
+      const firstField = Object.keys(payload.errors)[0];
+      const firstMessages = firstField ? payload.errors[firstField] : [];
+      const firstMessage = firstMessages?.[0];
+      if (firstMessage) {
+        return firstMessage;
+      }
+    }
+
+    return payload?.message ?? fallback;
   }
 
   if (error instanceof Error) {
