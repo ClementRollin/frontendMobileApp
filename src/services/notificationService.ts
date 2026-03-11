@@ -1,24 +1,50 @@
-import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 
 import { Task } from '../types/task';
 import { formatDateTime, isWithinNext24Hours } from '../utils/date';
 import { storageService } from './storageService';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+type NotificationsModule = typeof import('expo-notifications');
+let notificationsModulePromise: Promise<NotificationsModule | null> | null = null;
+const isExpoGo = Constants.appOwnership === 'expo';
+
+const loadNotificationsModule = async (): Promise<NotificationsModule | null> => {
+  if (isExpoGo) {
+    return null;
+  }
+
+  if (!notificationsModulePromise) {
+    notificationsModulePromise = import('expo-notifications').then((module) => {
+      module.setNotificationHandler({
+        handleNotification: async () => ({
+          shouldShowAlert: true,
+          shouldPlaySound: true,
+          shouldSetBadge: false,
+          shouldShowBanner: true,
+          shouldShowList: true,
+        }),
+      });
+
+      return module;
+    });
+  }
+
+  return notificationsModulePromise;
+};
 
 export type NotificationResult =
   | { scheduled: true; message: string }
-  | { scheduled: false; reason: 'no_due_date' | 'past_due_date' | 'too_far' | 'permission_denied' };
+  | {
+      scheduled: false;
+      reason: 'no_due_date' | 'past_due_date' | 'too_far' | 'permission_denied' | 'unavailable_in_expo_go';
+    };
 
 const hasPermission = async (): Promise<boolean> => {
+  const Notifications = await loadNotificationsModule();
+  if (!Notifications) {
+    return false;
+  }
+
   const permissions = await Notifications.getPermissionsAsync();
   if (permissions.granted) {
     return true;
@@ -32,7 +58,10 @@ export const notificationService = {
   async cancelTaskNotification(taskId: number): Promise<void> {
     const existingId = await storageService.getTaskNotification(taskId);
     if (existingId) {
-      await Notifications.cancelScheduledNotificationAsync(existingId);
+      const Notifications = await loadNotificationsModule();
+      if (Notifications) {
+        await Notifications.cancelScheduledNotificationAsync(existingId);
+      }
       await storageService.removeTaskNotification(taskId);
     }
   },
@@ -51,6 +80,11 @@ export const notificationService = {
 
     if (!isWithinNext24Hours(task.due_date)) {
       return { scheduled: false, reason: 'too_far' };
+    }
+
+    const Notifications = await loadNotificationsModule();
+    if (!Notifications) {
+      return { scheduled: false, reason: 'unavailable_in_expo_go' };
     }
 
     const allowed = await hasPermission();

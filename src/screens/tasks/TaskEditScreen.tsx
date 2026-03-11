@@ -37,6 +37,13 @@ export const TaskEditScreen = ({ route, navigation }: Props) => {
       Alert.alert('Notifications', "Permission refusee. L'application reste utilisable sans rappels.");
     }
 
+    if (!result.notificationResult.scheduled && result.notificationResult.reason === 'unavailable_in_expo_go') {
+      Alert.alert(
+        'Notifications',
+        "Les notifications locales ne sont pas disponibles dans Expo Go. Utilisez un build de developpement pour les tester.",
+      );
+    }
+
     navigation.goBack();
   };
 
