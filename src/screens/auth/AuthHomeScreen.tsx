@@ -13,12 +13,13 @@ export const AuthHomeScreen = ({ navigation }: Props) => (
   <ScreenContainer>
     <View style={styles.hero}>
       <Text style={styles.title}>TaskCollab</Text>
-      <Text style={styles.subtitle}>Organisez vos taches collaboratives simplement.</Text>
+      <Text style={styles.subtitle}>Gestion SaaS des tâches et équipes techniques.</Text>
     </View>
 
     <View style={styles.actions}>
       <AppButton label="Se connecter" onPress={() => navigation.navigate('Login')} />
-      <AppButton label="S'inscrire" variant="secondary" onPress={() => navigation.navigate('Register')} />
+      <AppButton label="S'inscrire par invitation" variant="secondary" onPress={() => navigation.navigate('Register')} />
+      <AppButton label="Première inscription CTO" variant="secondary" onPress={() => navigation.navigate('RegisterCto')} />
     </View>
   </ScreenContainer>
 );

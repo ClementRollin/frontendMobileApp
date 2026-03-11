@@ -3,11 +3,13 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { storageKeys } from '../constants/storageKeys';
-import { User } from '../types/auth';
+import { User, UserRole } from '../types/auth';
 
 type AuthState = {
   token: string | null;
   user: User | null;
+  role: UserRole | null;
+  organizationId: number | null;
   isHydrated: boolean;
   setSession: (token: string, user: User) => void;
   setUser: (user: User) => void;
@@ -20,10 +22,23 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       token: null,
       user: null,
+      role: null,
+      organizationId: null,
       isHydrated: false,
-      setSession: (token, user) => set({ token, user }),
-      setUser: (user) => set({ user }),
-      clearSession: () => set({ token: null, user: null }),
+      setSession: (token, user) =>
+        set({
+          token,
+          user,
+          role: user.role,
+          organizationId: user.organization_id,
+        }),
+      setUser: (user) =>
+        set({
+          user,
+          role: user.role,
+          organizationId: user.organization_id,
+        }),
+      clearSession: () => set({ token: null, user: null, role: null, organizationId: null }),
       setHydrated: (value) => set({ isHydrated: value }),
     }),
     {

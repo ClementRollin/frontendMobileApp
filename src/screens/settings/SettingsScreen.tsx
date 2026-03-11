@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { AppButton } from '../../components/AppButton';
 import { ScreenContainer } from '../../components/ScreenContainer';
+import { commonLabels } from '../../constants/labels';
 import { colors } from '../../constants/theme';
 import { useLogout } from '../../hooks/useAuth';
 
@@ -11,15 +12,15 @@ export const SettingsScreen = () => {
 
   const logout = async () => {
     await logoutMutation.mutateAsync();
-    Alert.alert('Session', 'Vous etes maintenant deconnecte.');
+    Alert.alert('Session', 'Vous êtes maintenant déconnecté.');
   };
 
   return (
     <ScreenContainer>
       <View style={styles.card}>
-        <Text style={styles.title}>Parametres</Text>
-        <Text style={styles.subtitle}>Gerez votre session et les preferences de l'application.</Text>
-        <AppButton label="Se deconnecter" variant="danger" onPress={logout} loading={logoutMutation.isPending} />
+        <Text style={styles.title}>Paramètres</Text>
+        <Text style={styles.subtitle}>Gérez votre session et les préférences de l'application.</Text>
+        <AppButton label={commonLabels.logout} variant="danger" onPress={logout} loading={logoutMutation.isPending} />
       </View>
     </ScreenContainer>
   );
